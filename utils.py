@@ -13,6 +13,9 @@ def read_func_mem_size(name):
         reader = csv.reader(csvfile)
         for row in reader:
             app[row[0]] = float(row[1])
+    
+    print("Available keys in app:", app.keys()) #SR-code
+    print("Name requested:", name) #SR-Code
     return app[name]
 
 def raw_to_average():
@@ -220,7 +223,9 @@ def read_selected_traces():
     for file in os.listdir(directory_path):
         if file.endswith('.txt'):
             original_function_names.append(file.split('.txt')[0])
+            #print('SR checking trace file: ' + file) #SR-code
             function_names.append(file.split('*')[0])
+            #print('SR checking trace file: ' + file) #SR-code
             path_list.append( os.path.join(directory_path, file))
     for file in path_list:
         with open(file, 'r') as f:
