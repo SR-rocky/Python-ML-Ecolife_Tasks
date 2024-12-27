@@ -7,6 +7,35 @@ import csv
 import numpy as np
 import shutil
 import sys
+
+def read_func_mem_size(name):
+    
+    app = {}
+    with open(f'{Path(__file__).parents[0]}/function_mem.csv', newline='', encoding='utf-8') as csvfile:
+        reader = csv.reader(csvfile)
+        for row in reader:
+            app[row[0]] = float(row[1])
+    
+    #print("Available keys in app:", app.keys()) #SR
+    #print("Name requested:", name) #SR
+    
+    '''
+    generic_key = name.split('_')[0]  # SR Split by underscore and use the first part
+    if generic_key not in app:
+        raise KeyError(f"Invalid key: {generic_key}. Available keys are: {list(app.keys())}")
+    return app[generic_key]
+    '''
+    '''
+    if name not in app: #SR
+        raise KeyError(f"Invalid key: {name}. Available keys are: {list(app.keys())}")
+    return app[name]
+    '''
+
+    return app[name]
+
+
+'''/*
+#SR mod of above codeblock
 def read_func_mem_size(name):
     app = {}
     with open(f'{Path(__file__).parents[0]}/function_mem.csv', newline='', encoding='utf-8') as csvfile:
@@ -14,9 +43,14 @@ def read_func_mem_size(name):
         for row in reader:
             app[row[0]] = float(row[1])
     
-    print("Available keys in app:", app.keys()) #SR-code
-    print("Name requested:", name) #SR-Code
-    return app[name]
+    # Extract the base name by removing suffixes like `_115` and `.txt`
+    base_name = name.split("_")[0].split(".txt")[0]
+
+    if base_name in app:
+        return app[base_name]
+    else:
+        raise KeyError(f"Requested name '{name}' could not be found in app. Available keys are: {list(app.keys())}")
+*/'''
 
 def raw_to_average():
     app = {}
@@ -214,6 +248,7 @@ def copy_and_rename_file(source_file, destination_directory, new_filename):
     except Exception as e:
         print("error{e}")
 
+#imp
 def read_selected_traces():
     directory_path = f"{Path(__file__).parents[0]}/selected_trace"
     traces = []
@@ -223,15 +258,34 @@ def read_selected_traces():
     for file in os.listdir(directory_path):
         if file.endswith('.txt'):
             original_function_names.append(file.split('.txt')[0])
-            #print('SR checking trace file: ' + file) #SR-code
-            function_names.append(file.split('*')[0])
-            #print('SR checking trace file: ' + file) #SR-code
+            #print('SR checking trace file: ' + file) #SR
+            #function_names.append(file.split('*')[0]) # Original, files don't have *
+            function_names.append(file.split('_')[0])  # SR, to split 'bfs-1000k' from 'bfs-1000k_115.txt'  
+            #print('SR checking trace file: ' + file) #SR
             path_list.append( os.path.join(directory_path, file))
     for file in path_list:
         with open(file, 'r') as f:
             file_content = [line.strip() for line in f.readlines()]
             traces.append(file_content)
+    '''/*
+    #SR code below for testing
+    print("Original Function Names:", original_function_names) #SR
+    print("Function Names:", function_names) #SR
+    #print("traces:", traces) #SR
+    # Specify the name of the file you want to inspect
+    target_file = "bfs-1000k_115"
+    # Check if the file exists in the original_function_names list
+    if target_file in original_function_names:
+        index = original_function_names.index(target_file)  # Get its index
+        print(f"Contents of {target_file}: {traces[index]}")  # Print the corresponding trace content
+    else:
+        print(f"{target_file} not found in original_function_names.")
+    #SR code above for testing
+     */'''
+    
     return traces,function_names,original_function_names
+   
+
 def prob_cold(cur_interval, kat):
         
     if len(cur_interval)==0:
