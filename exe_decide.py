@@ -69,11 +69,8 @@ def exe_loc_decision(old_warm_pool,
             assert(invoke_time1==invoke_time2)
             result_carbon[invoke_time1]["carbon"]+= kat_carbon
         else:
-            sys.exit("error")
+            sys.exit("error")       
             
-            
-        
-    
         if old_score>new_score:
             #get all from new
             if num_in_new >= invocation:

@@ -15,12 +15,11 @@ def read_func_mem_size(name):
         reader = csv.reader(csvfile)
         for row in reader:
             app[row[0]] = float(row[1])
-    
     #print("Available keys in app:", app.keys()) #SR
     #print("Name requested:", name) #SR
     
     '''
-    generic_key = name.split('_')[0]  # SR Split by underscore and use the first part
+    generic_key = name.split('_')[0]  # SR, Split by underscore and use the first part
     if generic_key not in app:
         raise KeyError(f"Invalid key: {generic_key}. Available keys are: {list(app.keys())}")
     return app[generic_key]
@@ -30,7 +29,6 @@ def read_func_mem_size(name):
         raise KeyError(f"Invalid key: {name}. Available keys are: {list(app.keys())}")
     return app[name]
     '''
-
     return app[name]
 
 
@@ -267,6 +265,9 @@ def read_selected_traces():
         with open(file, 'r') as f:
             file_content = [line.strip() for line in f.readlines()]
             traces.append(file_content)
+
+    return traces,function_names,original_function_names
+
     '''/*
     #SR code below for testing
     print("Original Function Names:", original_function_names) #SR
@@ -283,7 +284,7 @@ def read_selected_traces():
     #SR code above for testing
      */'''
     
-    return traces,function_names,original_function_names
+    
    
 
 def prob_cold(cur_interval, kat):

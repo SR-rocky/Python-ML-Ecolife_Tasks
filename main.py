@@ -16,14 +16,16 @@ def main(
     kat_time:list = [i for i in range(0,31)],
     optimizer: str = 'eco-life',
     STlambda:float = 0.5,
-    window_size: int = 20,
+    window_size: int = 20, #?
     pso_size: int = 15
 ):
     if app_list is None:
         df = pd.read_csv(f"{Path(__file__).parents[0]}/function_mem.csv",header=None) 
         app_list = df.iloc[:, 0].tolist()
+    
     # load carbon intensity data
     carbon_intensity, ci_max, ci_min,ci_avg = utils.load_carbon_intensity(region, start_hour, interval)
+    #SR, carbon_intensity gets its value from "return ci"
 
     #load trace:
     traces, trace_function_names,_ = utils.read_selected_traces()
@@ -53,5 +55,6 @@ def main(
     else: 
         sys.exit("input optimizer is not correct!")
    
-if __name__ == "__main__":
-    fire.Fire(main)
+    if __name__ == "__main__":
+        fire.Fire(main)
+    #SR, starts here, allows running main.py directly 
